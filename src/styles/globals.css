@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/**
+ * BLAH brand tokens — Echo Wave palette
+ * Documented in docs/design/color-palette-02.md
+ */
+@theme {
+  --font-sans:
+    "Pretendard", "Pretendard Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+
+  /* Core brand */
+  --color-brand: #1d9e75;
+  --color-brand-deep: #0f6e56;
+  --color-brand-mist: #e1f5ee;
+  --color-brand-charcoal: #04342c;
+  --color-brand-fg: #ffffff;
+
+  /* Extended ramp */
+  --color-brand-50: #e1f5ee;
+  --color-brand-100: #9fe1cb;
+  --color-brand-200: #5dcaa5;
+  --color-brand-400: #1d9e75;
+  --color-brand-600: #0f6e56;
+  --color-brand-800: #085041;
+  --color-brand-900: #04342c;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-slate-900);
+  background-color: #ffffff;
+}
+
+a {
+  color: inherit;
+}

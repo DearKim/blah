@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://blah.co.kr/sitemap.xml

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" role="img" aria-label="BLAH app icon">
+  <title>BLAH</title>
+  <rect width="1024" height="1024" rx="224" fill="#1D9E75"/>
+  <rect x="152" y="442" width="80" height="140" rx="20" fill="#FFFFFF"/>
+  <rect x="312" y="342" width="80" height="340" rx="20" fill="#FFFFFF"/>
+  <rect x="472" y="242" width="80" height="540" rx="20" fill="#FFFFFF"/>
+  <rect x="632" y="342" width="80" height="340" rx="20" fill="#FFFFFF"/>
+  <rect x="792" y="442" width="80" height="140" rx="20" fill="#FFFFFF"/>
+</svg>
