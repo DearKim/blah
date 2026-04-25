@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import Home from "@/routes/Home";
 import ProductsList from "@/routes/ProductsList";
 import ProductDetail from "@/routes/ProductDetail";
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <ScrollProgress />
       <div className="flex min-h-full flex-col">
         <Header />
         <main className="flex-1">

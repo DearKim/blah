@@ -40,7 +40,8 @@
 
 - **헤드라인:** 고객의 편의를 위한 정보 서비스, BLAH
 - **서브:** 흩어져 있는 정보를 한곳에서 객관적으로 비교하고 탐색할 수 있도록 만듭니다.
-- **CTA:** "제품 보기" (`/products`) — primary / "회사 소개" (`/about`) — outline
+- **CTA:** "제품 보기" (`/products`) — `primary-inverse` / "회사 소개" (`/about`) — `outline-inverse`
+- **배경:** `bg-brand` (Echo Wave teal). 텍스트는 흰색 / `text-brand-mist` 액센트.
 
 ## 2. 제품 그리드
 
@@ -62,6 +63,20 @@
 
 - 텍스트: "함께 만들어 갈 동료, 그리고 협업할 파트너를 찾고 있습니다."
 - 버튼: [문의하기] → `/contact`
+
+## 인터랙션
+
+각 섹션의 모션 동작을 [../design/motion-05.md](../design/motion-05.md) 의 토큰·컴포넌트로 구현합니다.
+
+| 섹션 | 인터랙션 |
+|---|---|
+| **Hero** | **brand 배경 + 흰색 텍스트**. stagger 마운트 진입(라벨 → 헤드라인 → 본문 → CTA → echo-wave). 스크롤 시 콘텐츠가 살짝 떠오르며 페이드. 우측 상단 brand-200 글로우 패럴랙스. CTA 우측에 `EchoWaveBars` 시그니처(흰색 막대) |
+| **2. 제품 그리드** | 헤더 fade-up + 카드 stagger 진입. 카드 호버 시 −4px lift + 테두리 색이 brand 로 전환 + 그림자 강화 + 화살표 우측 이동 |
+| **3. 가치 3가지** | 헤더 fade-up + 카드 stagger. 아이콘 박스가 −8° 회전 → 0° 로 진입. 호버 시 mist → brand 색 전환 |
+| **4. 마지막 CTA** | 박스 fade-up + 상단 `EchoWaveBars` 인라인 SVG 가 무한 호흡 |
+| **글로벌** | 페이지 상단 2px ScrollProgress 바 |
+
+모든 모션은 `prefers-reduced-motion: reduce` 시 자동 비활성.
 
 ## SEO
 

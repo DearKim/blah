@@ -1,6 +1,10 @@
 import { Info, LayoutGrid, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Section, SectionHeader } from "@/components/ui/Section";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { FadeUp } from "@/components/motion/FadeUp";
+import { motionTokens } from "@/lib/motion";
 
 type Value = {
   icon: LucideIcon;
@@ -27,24 +31,41 @@ const values: Value[] = [
 ];
 
 export function ValueProps() {
+  const reduced = useReducedMotion();
+
   return (
     <Section>
-      <SectionHeader
-        eyebrow="우리가 일하는 방식"
-        title="BLAH가 지키는 세 가지"
-      />
-      <div className="grid gap-6 md:grid-cols-3">
+      <FadeUp>
+        <SectionHeader eyebrow="우리가 일하는 방식" title="BLAH가 지키는 세 가지" />
+      </FadeUp>
+
+      <Stagger className="grid gap-6 md:grid-cols-3" gap={0.12}>
         {values.map(({ icon: Icon, title, body }) => (
-          <div
-            key={title}
-            className="rounded-xl border border-slate-200 bg-white p-7"
-          >
-            <Icon size={28} className="text-slate-900" strokeWidth={1.75} />
-            <h3 className="mt-5 text-lg font-semibold text-slate-900">{title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p>
-          </div>
+          <StaggerItem key={title} className="h-full">
+            <motion.div
+              whileHover={reduced ? undefined : { y: -2 }}
+              transition={{ type: "spring", stiffness: 280, damping: 22 }}
+              className="group h-full rounded-xl border border-slate-200 bg-white p-7 transition-colors hover:border-brand"
+            >
+              <motion.div
+                initial={reduced ? false : { rotate: -8, scale: 0.9 }}
+                whileInView={{ rotate: 0, scale: 1 }}
+                viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+                transition={{
+                  duration: motionTokens.duration.base,
+                  ease: motionTokens.ease,
+                  delay: 0.1,
+                }}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brand-mist text-brand-deep transition-colors group-hover:bg-brand group-hover:text-brand-fg"
+              >
+                <Icon size={22} strokeWidth={1.75} />
+              </motion.div>
+              <h3 className="mt-5 text-lg font-semibold text-slate-900">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p>
+            </motion.div>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </Section>
   );
 }

@@ -18,7 +18,8 @@
 | 01 | [brand-01.md](brand-01.md) | 회사명·보이스·금칙어·표기 규칙. Echo Wave 브랜드 컨셉 |
 | 02 | [color-palette-02.md](color-palette-02.md) | Echo Wave 컬러 토큰 (`--color-brand`, `--color-brand-deep`, …) 과 사용 비율 |
 | 03 | [layout-03.md](layout-03.md) | 글로벌 레이아웃, 컨테이너, 반응형 브레이크포인트 |
-| 04 | [brand-assets-04.md](brand-assets-04.md) | 로고 5종·파비콘·앱 아이콘 파일별 사용처와 코드 예시 |
+| 04 | [brand-assets-04.md](brand-assets-04.md) | 로고 5종·파비콘·앱 아이콘·echo-wave 애니메이션 파일별 사용처 |
+| 05 | [motion-05.md](motion-05.md) | 모션 원칙·토큰·재사용 컴포넌트(`FadeUp`·`Stagger`·`ScrollProgress`·`EchoWaveBars`)·섹션별 인터랙션 |
 
 ## 자산 파일 위치
 
@@ -32,9 +33,11 @@ public/brand/
 │   ├── logo-symbol.svg
 │   ├── logo-mono.svg
 │   └── logo-white.svg
-└── icons/
-    ├── favicon.svg
-    └── app-icon.svg
+├── icons/
+│   ├── favicon.svg
+│   └── app-icon.svg
+└── animations/
+    └── echo-wave.gif       사운드 파장 루프 (360×180, 1.8s)
 ```
 
 자산 사용 가이드는 [brand-assets-04.md](brand-assets-04.md) 를 참조하세요.

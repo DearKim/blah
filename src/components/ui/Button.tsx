@@ -2,7 +2,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { Link } from "react-router";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "outline" | "ghost";
+type Variant = "primary" | "outline" | "ghost" | "primary-inverse" | "outline-inverse";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -13,6 +13,11 @@ const variants: Record<Variant, string> = {
   outline:
     "border border-slate-300 bg-white text-slate-900 hover:border-brand hover:bg-brand-mist hover:text-brand-deep",
   ghost: "text-slate-700 hover:bg-brand-mist hover:text-brand-deep",
+  // brand 배경 위에서 사용. 흰색 배경 + brand 텍스트(또렷한 #1D9E75 + semibold).
+  "primary-inverse": "bg-white font-semibold text-brand hover:bg-brand-mist",
+  // brand 배경 위에서 사용. 투명 + 흰색 보더/텍스트.
+  "outline-inverse":
+    "border border-white/60 bg-transparent text-white hover:border-white hover:bg-white/10 hover:text-white",
 };
 
 const sizes: Record<Size, string> = {

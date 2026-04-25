@@ -5,9 +5,10 @@
  * Documented in docs/design/color-palette-02.md
  */
 @theme {
+  /* SUIT Variable — 부드러운 한국어 가변 폰트. 미설치 환경에서는 Pretendard → 시스템 폰트로 폴백. */
   --font-sans:
-    "Pretendard", "Pretendard Variable", ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    "SUIT Variable", "Pretendard Variable", "Pretendard", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 
   /* Core brand */
   --color-brand: #1d9e75;

@@ -13,9 +13,11 @@ public/brand/
 │   ├── logo-symbol.svg       막대 심볼만
 │   ├── logo-mono.svg         모노크롬 (charcoal 단색)
 │   └── logo-white.svg        화이트 단색
-└── icons/
-    ├── favicon.svg           브라우저 탭·북마크용 단순화 버전
-    └── app-icon.svg          1024×1024 squircle 앱 아이콘
+├── icons/
+│   ├── favicon.svg           브라우저 탭·북마크용 단순화 버전
+│   └── app-icon.svg          1024×1024 squircle 앱 아이콘
+└── animations/
+    └── echo-wave.gif         사운드 파장 루프 (360×180, 1.8s)
 ```
 
 ## 2. 로고 5종 — 어디에 어떤 것을
@@ -57,6 +59,25 @@ public/brand/
 - **특징:** 1024×1024 squircle. 5개 막대 정상 비율. 사이즈별 익스포트 시 모서리 radius 비율(약 22%) 유지
 - **viewBox:** 1024×1024
 - **사용 코드:** [index.html](../../index.html) 의 `<link rel="apple-touch-icon" href="/brand/icons/app-icon.svg" />`
+
+## 3-1. 애니메이션 — `echo-wave.gif`
+
+- **사용처:** 웹사이트 인트로/시그니처 액센트, 영상 인트로·아웃트로, SNS 게시물, 슬랙·노션 임베드, 스플래시 화면
+- **포맷:** GIF, **360×180**, 36프레임, **1.8초 루프**, 흰 배경
+- **모션 컨셉:** 부드러운 사인파 기반의 *center-out wave*. 가운데 막대가 lead 로 정점에 먼저 도달하고, 양쪽 막대가 π/4·π/2 위상차를 두고 따라옴 — 정보가 중심에서 외부로 전달되는 BLAH 의 핵심 메타포
+- **현재 사이트 사용 위치:** 자산만 보관 중. (Hero / Final CTA 모두 색·크기 동적 제어가 필요해 인라인 SVG `EchoWaveBars` 를 사용 중)
+- **인라인 SVG 권장:** brand 배경·다크 배경 등 흰 배경이 어울리지 않는 곳, 또는 색·크기·재생 횟수를 코드로 제어해야 하는 곳에서는 [src/components/motion/EchoWaveBars.tsx](../../src/components/motion/EchoWaveBars.tsx) 를 사용하세요. Tailwind `text-{color}` 가 막대 색으로 흘러들어갑니다.
+
+```tsx
+// 정적 GIF — 가장 단순
+<img src="/brand/animations/echo-wave.gif" alt="" aria-hidden="true" className="h-12" />
+
+// 인라인 SVG — 색/사이즈/루프를 코드로 제어
+import { EchoWaveBars } from "@/components/motion/EchoWaveBars";
+<div className="text-brand"><EchoWaveBars size={32} loop /></div>
+```
+
+> 별도 사이즈가 필요하면(정사각·와이드 배너·레티나 등) 동일 패턴으로 재생성 가능합니다.
 
 ## 4. 사용 규칙
 

@@ -49,12 +49,19 @@ BLAH의 시각 정체성은 **5개 막대로 구성된 사운드 파장**과 **B
 
 ## 타이포그래피
 
-- 본문: **Pretendard** (한글) → 시스템 산세리프 fallback
+- 본문: **SUIT Variable** (한국어 가변 폰트, 100~900 가중치). 글자 모서리가 살짝 둥글고 자간이 여유로워 정보 사이트의 신뢰감을 유지하면서도 부드러운 인상을 준다.
+- 폴백: Pretendard → 시스템 산세리프
 - 워드마크 (로고 SVG 내부): **Inter Medium (500)**, 인쇄 시에는 outline 변환
 - 본문 16px, 행간 약 1.6
 - 헤딩은 단계별 시각 차이를 명확히 (h1 ≥ 36px, h2 ≥ 28px, h3 ≥ 22px)
 
-대체 폰트 체인: `Pretendard, system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif`.
+폰트 체인:
+```css
+"SUIT Variable", "Pretendard Variable", "Pretendard", ui-sans-serif, system-ui,
+  -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif
+```
+
+SUIT 는 [index.html](../../index.html) 의 `<link>` 로 jsdelivr CDN 에서 변동축 woff2 1개 파일로 로드됩니다 (가중치 전체를 단일 파일로 커버).
 
 ## 제품별 색상 사용 규칙
 
