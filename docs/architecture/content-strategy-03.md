@@ -39,6 +39,16 @@ export const company = {
 ```ts
 export type ProductStatus = "live" | "beta" | "preparing";
 
+export type ProductFeature = {
+  title: string;
+  body: string;
+};
+
+export type ProductPillar = {
+  label: string;     // 짧은 영역 라벨 (예: "병의원·동물병원 지도")
+  body: string;      // 한두 문장의 단락 — 굿닥식 서비스 소개 톤
+};
+
 export type Product = {
   slug: "apago" | "teum" | string;        // URL 식별자
   name: string;                            // 영문 표기
@@ -47,12 +57,14 @@ export type Product = {
   domain: string;                          // 분야 (헬스케어 등)
   status: ProductStatus;                   // 라이프사이클 상태
   audiences: string[];                     // 타깃 사용자
-  summary: string;                         // 2~3줄 요약 (카드용)
+  summary: string;                         // 2~3줄 요약 (카드·홈 lead 용)
   description: string;                     // 상세 본문 (한 단락 ~ 여러 단락)
-  features: { title: string; body: string }[];
+  features: ProductFeature[];              // 상세 페이지의 세분화 기능 리스트
+  pillars?: ProductPillar[];               // 홈 섹션 단락 블록 — 있으면 features 대신 사용
   promises?: string[];                     // "약속" 섹션 항목
   externalUrl?: string;                    // 운영 사이트 URL
-  logo?: string;                           // 카드용 로고 자산 경로
+  accentColor?: string;                    // 비주얼 블록 배경·pillar 라벨 색
+  videoSrc?: string;                       // 홈 비주얼 블록 배경 영상 URL (Coverr 등)
 };
 
 export const products: Product[] = [
@@ -62,6 +74,12 @@ export const products: Product[] = [
 export const getProductBySlug = (slug: string) =>
   products.find((p) => p.slug === slug);
 ```
+
+### 신규 필드 보충 설명
+
+- **`pillars`** — 홈 `ProductSection` 에서만 사용. 굿닥식 "라벨 + 단락" 형태로 서비스의 핵심 갈래를 2~3 개 보여줌. 없으면 `features.slice(0, 3)` 이 불릿 리스트로 폴백.
+- **`videoSrc`** — 비주얼 블록 배경 영상. 미설정 시 `accentColor` 솔리드 블록만 노출. Coverr 처럼 hotlink 가능한 무료 라이선스 CDN 권장. `prefers-reduced-motion` 환경에서는 자동 비렌더.
+- **`accentColor`** — 미설정 시 `var(--color-brand)` 자동 사용. 비주얼 블록 배경과 pillar 라벨 색에 적용되어 제품별 시각 차별화.
 
 ### `src/content/nav.ts`
 

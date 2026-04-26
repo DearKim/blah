@@ -2,13 +2,13 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import type { Product } from "@/content/products";
-import { StatusBadge } from "@/components/ui/Badge";
 
 type ProductCardProps = {
   product: Product;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const accent = product.accentColor ?? "var(--color-brand)";
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -19,12 +19,20 @@ export function ProductCard({ product }: ProductCardProps) {
         to={`/products/${product.slug}`}
         className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-7 transition-[border-color,box-shadow] duration-300 ease-out group-hover:border-brand group-hover:shadow-lg"
       >
-        <div className="mb-5 flex items-center gap-2">
-          <StatusBadge status={product.status} />
+        <div className="mb-5 flex items-center gap-3">
+          {product.logoSrc && (
+            <img
+              src={product.logoSrc}
+              alt=""
+              aria-hidden="true"
+              className="h-8 w-auto shrink-0"
+              loading="lazy"
+            />
+          )}
           <span className="text-xs text-slate-500">{product.domain}</span>
         </div>
 
-        <h3 className="text-xl font-bold text-slate-900">
+        <h3 className="text-xl font-bold" style={{ color: accent }}>
           {product.name}{" "}
           <span className="text-base font-normal text-slate-500">({product.nameKo})</span>
         </h3>
@@ -32,12 +40,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <p className="mt-5 flex-1 text-sm leading-relaxed text-slate-700">{product.summary}</p>
 
-        <div className="mt-6 flex items-center text-sm font-medium text-slate-900 transition-colors group-hover:text-brand-deep">
+        <div
+          className="mt-6 flex items-center text-sm font-medium transition-transform group-hover:translate-x-0.5"
+          style={{ color: accent }}
+        >
           자세히 보기
-          <ArrowRight
-            size={16}
-            className="ml-1 transition-transform duration-300 group-hover:translate-x-1"
-          />
+          <ArrowRight size={16} className="ml-1" />
         </div>
       </Link>
     </motion.div>

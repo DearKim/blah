@@ -16,7 +16,8 @@ docs/
 ├── content/                           사이트에 실제로 노출될 콘텐츠 시안
 │   ├── index.md
 │   ├── apago-01.md                    A.PAGO 제품 페이지 카피
-│   └── teum-02.md                     TEUM 제품 페이지 카피
+│   ├── teum-02.md                     TEUM 제품 페이지 카피
+│   └── medical-compliance-03.md       A.PAGO 카피의 의료법·의료기기법·수의사법 컴플라이언스 가이드
 │
 ├── architecture/                      기술 결정과 코드 구조
 │   ├── index.md
@@ -64,6 +65,7 @@ docs/
 **콘텐츠 작업자**
 1. [content/](content/) 의 제품별 카피 시안
 2. [design/brand-01.md](design/brand-01.md) — 톤·금칙어
+3. A.PAGO(의료) 카피를 다룬다면 [content/medical-compliance-03.md](content/medical-compliance-03.md) 필수
 
 **디자이너**
 1. [design/index.md](design/index.md)

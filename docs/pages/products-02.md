@@ -34,8 +34,9 @@
 │ A.PAGO (아파고)                          │
 │ — 광고가 아닌 정보, 추천이 아닌 사실        │
 │                                          │
-│ 식약처·FDA 인증 의료 AI와 도입 병의원·    │
-│ 동물병원을 객관적으로 탐색하는 정보 플랫폼.   │
+│ 병의원·동물병원 정보와 식약처 허가 의료    │
+│ AI 솔루션을 (분리해) 객관적으로 탐색하는    │
+│ 정보 플랫폼.                              │
 │                                          │
 │ 분야: 헬스케어                            │
 │                       [자세히 보기 →]     │
@@ -115,4 +116,5 @@
 각 제품의 본문은 다음 시안 문서를 그대로 옮깁니다.
 
 - A.PAGO: [../content/apago-01.md](../content/apago-01.md)
+  - 의료법·의료기기법·수의사법 컴플라이언스 가이드: [../content/medical-compliance-03.md](../content/medical-compliance-03.md)
 - TEUM: [../content/teum-02.md](../content/teum-02.md)

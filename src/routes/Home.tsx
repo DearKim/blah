@@ -1,7 +1,7 @@
 import { Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { Hero } from "@/components/home/Hero";
-import { ProductGrid } from "@/components/home/ProductGrid";
+import { ProductSection } from "@/components/home/ProductSection";
 import { ValueProps } from "@/components/home/ValueProps";
 import { Section } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
@@ -19,8 +19,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ProductGrid />
       <ValueProps />
+      <ProductSection slug="apago" index={1} muted />
+      <ProductSection slug="teum" index={2} alternate />
       <Section muted>
         <motion.div
           variants={fadeUp}

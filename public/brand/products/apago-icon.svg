@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" role="img" aria-label="A.PAGO icon">
+  <title>A.PAGO Icon</title>
+  <g fill="none" stroke="#1878CE" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M120 20 C 66 20, 28 58, 28 112 C 28 152, 66 192, 120 260 C 174 192, 212 152, 212 112 C 212 58, 174 20, 120 20 Z" stroke-width="15"/>
+    <path d="M109 70 L131 70 L131 92 L153 92 L153 114 L131 114 L131 136 L109 136 L109 114 L87 114 L87 92 L109 92 Z" stroke-width="9"/>
+    <path d="M120 162 L120 222" stroke-width="9"/>
+    <path d="M99 201 L120 222 L141 201" stroke-width="9"/>
+  </g>
+</svg>
