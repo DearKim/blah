@@ -48,10 +48,10 @@ export function Footer() {
             {company.email && (
               <a
                 href={`mailto:${company.email}`}
-                className="inline-flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-slate-900"
+                className="inline-flex items-start gap-2 text-sm text-slate-500 transition-colors hover:text-slate-900"
               >
-                <Mail size={14} />
-                <span>{company.email}</span>
+                <Mail size={14} className="mt-0.5 shrink-0" />
+                <span className="break-all">{company.email}</span>
               </a>
             )}
           </div>

@@ -1,0 +1,79 @@
+# BLAH static deploy hardening
+# 대상: cPanel / Apache 기반 FTP 호스트.
+# Nginx 호스트라면 이 파일은 무시되며, 해당 호스트의 server block 에 동일한 헤더를 옮기세요.
+
+# ─── 1. 보안 응답 헤더 ───────────────────────────────────────────────
+<IfModule mod_headers.c>
+  # MIME 스니핑 차단
+  Header always set X-Content-Type-Options "nosniff"
+  # 클릭재킹 차단 — 어떤 사이트도 본 페이지를 iframe 으로 박지 못함
+  Header always set X-Frame-Options "DENY"
+  # 외부로 referrer 흘리지 않음
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # 쓰지 않는 강력 권한 일괄 차단
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+  # HTTPS 강제 (HTTPS 가 활성화된 도메인에서만 의미가 있음)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # CSP — 외부 의존성: cdn.coverr.co (제품 영상) 만. 폰트는 자체 호스팅.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' https://cdn.coverr.co; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+</IfModule>
+
+# ─── 2. 소스맵·민감 파일 노출 차단 ─────────────────────────────────────
+<FilesMatch "\.map$">
+  Require all denied
+  <IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+  </IfModule>
+</FilesMatch>
+
+# .env / .git / lock files / package.json 류 직접 접근 차단
+<FilesMatch "(^\.|\.(env|gitignore|gitattributes|lock|log|md|json|tsbuildinfo|toml|yml|yaml)$)">
+  Require all denied
+</FilesMatch>
+
+# 디렉터리 인덱싱 비활성
+Options -Indexes
+
+# ─── 3. SPA fallback (React Router) ────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 이미 존재하는 파일/디렉터리는 그대로 서빙
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 그 외 모든 경로는 index.html 로
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ─── 4. 캐시 정책 ──────────────────────────────────────────────────────
+# 해시 파일명을 쓰는 자산은 1년, HTML 은 즉시 만료
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # HTML 은 항상 재검증
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  # 해시 파일은 immutable
+  <FilesMatch "-[A-Za-z0-9_-]{8,}\.(js|css|woff2|svg|png|jpg|jpeg|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# ─── 5. 압축 ───────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml font/woff font/woff2
+</IfModule>

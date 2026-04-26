@@ -7,11 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1d9e75" />
 
-    <!-- SUIT Variable — 부드러운 한국어 가변 폰트 (100~900) -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <!-- 보안 메타 — 서버 헤더(.htaccess)와 함께 이중 적용. CSP/Frame-Options 는 .htaccess 에 둠. -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- SUIT Variable — public/fonts/ 자체 호스팅. @font-face 는 globals.css 에서 선언. -->
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@latest/fonts/variable/woff2/SUIT-Variable.css"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/SUIT-Variable.woff2"
+      crossorigin="anonymous"
     />
 
     <title>BLAH — 고객의 편의를 위한 정보 서비스</title>

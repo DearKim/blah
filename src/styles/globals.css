@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* SUIT Variable — 자체 호스팅 (public/fonts/). 외부 CDN 의존 0. */
+@font-face {
+  font-family: "SUIT Variable";
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/SUIT-Variable.woff2") format("woff2-variations");
+}
+
 /**
  * BLAH brand tokens — Echo Wave palette
  * Documented in docs/design/color-palette-02.md
