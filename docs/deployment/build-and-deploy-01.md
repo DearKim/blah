@@ -6,7 +6,7 @@ Vite 가 정적 산출물(`dist/`) 을 생성합니다. 동적 백엔드 없이 
 
 ```bash
 pnpm install
-pnpm build       # → dist/ 생성
+pnpm build       # → dist/ 생성 (sourcemap 없음, SRI 자동 주입)
 pnpm preview     # 로컬에서 빌드 결과 확인
 ```
 
@@ -14,15 +14,23 @@ pnpm preview     # 로컬에서 빌드 결과 확인
 
 ```
 dist/
-├── index.html
-├── assets/
-│   ├── *.js
-│   └── *.css
-├── favicon.ico
-├── og-image.png
+├── .htaccess                              ← Apache 보안 헤더 + SPA fallback
+├── _redirects                             ← Netlify SPA fallback (다른 호스팅에선 무해)
+├── index.html                             ← <script>/<link> 에 SHA-256 SRI 자동 주입
 ├── robots.txt
-└── sitemap.xml
+├── assets/
+│   ├── index-<hash>.js
+│   └── index-<hash>.css
+├── brand/                                 ← public/brand/ 그대로 복사
+│   ├── animations/echo-wave.gif
+│   ├── icons/  (favicon · app-icon)
+│   ├── logos/  (5종)
+│   └── products/  (apago / teum 컬러 + 화이트)
+└── fonts/
+    └── SUIT-Variable.woff2                ← 자체 호스팅 (610 KB)
 ```
+
+> 보안 보강(SRI · sourcemap 차단 · CSP · 폰트 자체 호스팅)의 자세한 가이드는 [security-02.md](security-02.md) 참조.
 
 ## SPA 라우팅과 호스팅 fallback
 
@@ -31,23 +39,85 @@ dist/
 
 | 호스팅 | 설정 방법 |
 |---|---|
+| **Apache (cPanel·카페24·후이즈·가비아)** | `public/.htaccess` 에 `mod_rewrite` 규칙 박아 둠 — 빌드 시 자동 복사됨 |
 | **Vercel** | 별도 설정 없이 SPA 자동 인식. 필요 시 `vercel.json` 의 `rewrites: [{ "source": "/(.*)", "destination": "/" }]` |
-| **Netlify** | `public/_redirects` 파일에 한 줄: `/* /index.html 200` |
-| **Cloudflare Pages** | `public/_redirects` 동일 (`/* /index.html 200`) |
-| **GitHub Pages** | `404.html` 트릭 또는 `vite-plugin-gh-pages-spa` 사용. 비권장. |
+| **Netlify** | `public/_redirects` 한 줄: `/* /index.html 200` |
+| **Cloudflare Pages** | `public/_redirects` 동일 |
+| **GitHub Pages** | `404.html` 트릭. 비권장. |
 | **AWS S3 + CloudFront** | CloudFront Functions 또는 Error Document 를 `/index.html` (200) 으로 설정 |
 
-권장: **Vercel** 또는 **Cloudflare Pages**. 이유는 (1) 무료 티어 충분, (2) 커스텀 도메인 + HTTPS 자동, (3) PR 단위 프리뷰 배포.
-최종 선택은 [../roadmap/open-questions-02.md](../roadmap/open-questions-02.md) 참조.
+권장: 카페24 (현 운영 환경) · Vercel · Cloudflare Pages 중 택 1.
+
+## 카페24 배포 (현 운영 환경)
+
+### 도큐먼트 루트
+
+카페24 일반/광 호스팅의 도큐먼트 루트는 **`/www/`** 입니다.
+FTP 접속 후 보이는 구조:
+
+```
+/                    ← FTP 루트
+├── www/             ← 여기 (도큐먼트 루트, 도메인 → 이 폴더)
+├── log/
+├── backup/
+└── .htaccess        ← 카페24 시스템(예: PHP_FLAG) — 건드리지 말 것
+```
+
+### 업로드할 것
+
+`dist/` **폴더 자체가 아니라 내부 파일들**을 `/www/` 로 옮깁니다.
+
+```
+✅ 올바름                    ❌ 잘못됨
+/www/index.html              /www/dist/index.html
+/www/.htaccess               /www/dist/.htaccess
+/www/assets/                 /www/dist/assets/
+/www/brand/
+/www/fonts/
+/www/robots.txt
+```
+
+### FTP 클라이언트 주의
+
+- **FileZilla**: 메뉴 → 서버 → "강제로 숨김 파일 표시" ON (`.htaccess` 가시화)
+- **WinSCP**: 환경설정 → 패널 → "숨김 파일 표시"
+
+`.htaccess` 가 누락되면 **보안 헤더·SPA fallback 모두 적용 안 됨**.
+
+### 카페24 모듈 동작
+
+대부분 동작하지만 호스팅 플랜에 따라 차이가 있습니다:
+
+| 모듈 | 일반적으로 |
+|---|---|
+| `mod_rewrite` (SPA fallback) | ✅ |
+| `mod_headers` (CSP, X-Frame 등) | ✅ |
+| `mod_expires` (캐시) | ✅ |
+| `mod_deflate` (gzip 압축) | ✅ |
+| `Strict-Transport-Security` | 카페24 SSL 부가서비스 활성 시에만 의미 |
+
+업로드 후 `https://도메인/products/apago` 를 직접 입력해 확인. 404 가 나면 `mod_rewrite` 비활성 플랜이라 호스팅 콘솔에서 확인 필요.
+
+### 첫 업로드 체크리스트
+
+- [ ] `dist/.htaccess` 가 FTP 클라이언트에 보이는가
+- [ ] `/www/` 안 기존 파일(예: `hosting_index.html`) 백업 후 비우기
+- [ ] `dist/` 내부 파일들을 `/www/` 로 통째 업로드
+- [ ] `https://도메인/` → 홈 정상 노출
+- [ ] `https://도메인/products/apago` 직접 입력 → 404 안 나면 mod_rewrite OK
+- [ ] DevTools Network → `/fonts/SUIT-Variable.woff2` 200 (jsdelivr 호출 0건)
+- [ ] DevTools Network → `/assets/index-XXX.js` 응답 헤더에 `Content-Security-Policy` 존재
+- [ ] DevTools Console → SRI 오류 없음
+
+### `_redirects` 파일
+
+Netlify 전용이라 카페24 Apache 에서는 정적 파일로 서빙되며 동작에 영향 0. SPA fallback 은 `.htaccess` 의 mod_rewrite 가 처리합니다. 거슬리면 업로드 시 빼셔도 무방합니다.
 
 ## 도메인
 
 - 운영 도메인: `blah.co.kr`
-- 호스팅 측에 도메인 추가 후 DNS (A / CNAME) 설정.
-- HTTPS 는 호스팅 자동 발급(Let's Encrypt) 사용.
-
-도메인 운영 전 임시:
-- 호스팅 기본 도메인(예: `blah.vercel.app`) 으로 먼저 확인.
+- 카페24 호스팅 측에 도메인 연결 후 DNS 처리.
+- HTTPS 는 카페24 SSL 부가서비스(Let's Encrypt 자동 발급) 사용 권장.
 
 ## SEO 기본기
 
@@ -85,14 +155,7 @@ OG 이미지는 페이지별 따로 만들지 않고 사이트 1장으로 시작
   - **Plausible** — 쿠키 없음, 가벼움, 유료
   - **GA4** — 무료, 한국 시장 친숙도 높음, 동의 배너 필요
 - 어느 쪽이든 `index.html` 에 한 줄, 환경변수로 측정 ID 분리.
-
-## 배포 절차 (예정)
-
-1. `main` 브랜치에 푸시
-2. 호스팅(Vercel/CF) 이 자동 빌드
-3. 프리뷰 URL 확인 → 운영 도메인 자동 배포
-
-CI 워크플로우(`.github/workflows/`) 별도 작성은 1차 출시에는 불필요. 호스팅 자동 빌드로 충분.
+- CSP 의 `script-src` 와 `connect-src` 에 해당 도메인 추가 필요 — [security-02.md](security-02.md) 참조.
 
 ## 환경 변수 (현재 없음)
 

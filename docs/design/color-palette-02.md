@@ -80,6 +80,25 @@
 | 구분선 / 카드 테두리 | `border-slate-200` |
 | 옅은 섹션 배경 | `bg-slate-50` |
 
+## 제품별 액센트 (per-product accent)
+
+회사 컬러(brand teal) 와 별도로, 각 제품은 자기 페이지에서 자기 색을 입습니다. CSS 토큰으로 등록하지 않고 [`src/content/products.ts`](../architecture/content-strategy-03.md) 의 `accentColor` 필드에 16진 코드로 박혀, 컴포넌트가 inline `style={{ color | backgroundColor: accent }}` 로 렌더합니다.
+
+| 제품 | HEX | 출처 | 적용 범위 |
+|---|---|---|---|
+| **A.PAGO** | `#1878CE` | A.PAGO Blue ([apago/docs/10-brand-guidelines.md](../../../apago/docs/10-brand-guidelines.md)) | 홈 섹션 3 / `/products/apago` 풀페이지 / 카드 / About 그리드 |
+| **TEUM** | `#82C926` | TEUM Lime (Yeondu) | 홈 섹션 4 / `/products/teum` 풀페이지 / 카드 / About 그리드 |
+
+### 적용 원칙
+
+- **사이트 전반 (홈·About·Contact·Footer 등)** — BLAH brand teal 그대로
+- **제품 상세 페이지(`/products/:slug`) 와 그 진입 카드** — 제품 accent 가 페이지의 주인. Hero 풀블리드 / 모든 섹션 eyebrow·heading / 마커 / CTA 까지 일관 적용
+- **Contact 카드 4종** — BLAH + 두 제품 색을 자연스럽게 인용한 4종 팔레트(brand / apago blue / teum lime / brand-deep)
+
+### 미설정 시 폴백
+
+`accentColor` 가 없는 제품은 `var(--color-brand)` (회사 teal) 로 자동 폴백합니다. 새 제품을 추가할 때 자기 색이 없다면 잠정 폴백 사용 OK.
+
 ## 다크 모드
 
 1차 출시 미지원. 다크 모드 도입 시 다음 매핑을 기준으로 확장합니다.

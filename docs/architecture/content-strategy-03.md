@@ -55,7 +55,7 @@ export type Product = {
   nameKo: string;                          // 한글 표기
   tagline: string;                         // 한 줄 슬로건
   domain: string;                          // 분야 (헬스케어 등)
-  status: ProductStatus;                   // 라이프사이클 상태
+  status: ProductStatus;                   // 라이프사이클 상태 (현재 화면 미노출, 데이터로만 보존)
   audiences: string[];                     // 타깃 사용자
   summary: string;                         // 2~3줄 요약 (카드·홈 lead 용)
   description: string;                     // 상세 본문 (한 단락 ~ 여러 단락)
@@ -63,8 +63,10 @@ export type Product = {
   pillars?: ProductPillar[];               // 홈 섹션 단락 블록 — 있으면 features 대신 사용
   promises?: string[];                     // "약속" 섹션 항목
   externalUrl?: string;                    // 운영 사이트 URL
-  accentColor?: string;                    // 비주얼 블록 배경·pillar 라벨 색
+  accentColor?: string;                    // 비주얼 블록 배경·pillar 라벨·CTA 색
   videoSrc?: string;                       // 홈 비주얼 블록 배경 영상 URL (Coverr 등)
+  logoSrc?: string;                        // 컬러 로고 (밝은 배경용) — 카드/상세 영역
+  logoWhiteSrc?: string;                   // 흰색 로고 (accent 배경 위) — 제품 상세 Hero
 };
 
 export const products: Product[] = [
@@ -78,8 +80,10 @@ export const getProductBySlug = (slug: string) =>
 ### 신규 필드 보충 설명
 
 - **`pillars`** — 홈 `ProductSection` 에서만 사용. 굿닥식 "라벨 + 단락" 형태로 서비스의 핵심 갈래를 2~3 개 보여줌. 없으면 `features.slice(0, 3)` 이 불릿 리스트로 폴백.
-- **`videoSrc`** — 비주얼 블록 배경 영상. 미설정 시 `accentColor` 솔리드 블록만 노출. Coverr 처럼 hotlink 가능한 무료 라이선스 CDN 권장. `prefers-reduced-motion` 환경에서는 자동 비렌더.
-- **`accentColor`** — 미설정 시 `var(--color-brand)` 자동 사용. 비주얼 블록 배경과 pillar 라벨 색에 적용되어 제품별 시각 차별화.
+- **`videoSrc`** — 비주얼 블록 배경 영상. 미설정 시 `accentColor` 솔리드 블록만 노출. Coverr 처럼 hotlink 가능한 무료 라이선스 CDN 권장. `prefers-reduced-motion` 환경에서는 자동 비렌더. CSP 의 `media-src` 에 출처가 등록돼야 함.
+- **`accentColor`** — 미설정 시 `var(--color-brand)` 자동 사용. 비주얼 블록 배경 / pillar 라벨 / 상세 페이지 Hero 풀블리드 / 섹션 헤딩 / 마커 / CTA 까지 페이지 전반에 적용되어 제품별 시각 차별화.
+- **`logoSrc` / `logoWhiteSrc`** — `public/brand/products/<slug>-icon.svg` / `<slug>-icon-white.svg` 한 쌍. 컬러 로고는 흰 배경(홈 카드 하단·상세 페이지 카드·About products 그리드)에, 흰 로고는 accent 배경(제품 상세 Hero)에 사용. 자세한 자산 사양은 [`../design/brand-assets-04.md`](../design/brand-assets-04.md) §6 참조.
+- **`status`** — 현재 화면에서 노출하지 않습니다 ("운영 중"·"베타" 라벨 제거). 데이터 모델에는 남겨 두어 후일 필터/정렬/RSS 등에 재활용 가능. 기존 `StatusBadge` 컴포넌트는 삭제됨.
 
 ### `src/content/nav.ts`
 
@@ -101,11 +105,12 @@ export const footerNav = [
 
 1. `docs/content/<slug>-<NN>.md` 에 카피 시안을 먼저 작성한다 (기존 `apago-01.md`, `teum-02.md` 형식 따라).
 2. 본 문서의 `Product` 타입에 맞춰 `src/content/products.ts` 의 `products` 배열에 객체 한 개를 추가한다.
-3. 로고·이미지는 `src/assets/products/<slug>/` 아래에 두고, `logo` 필드에 경로를 적는다.
-4. [`docs/overview/products-02.md`](../overview/products-02.md) 의 표에도 한 줄을 추가한다.
-5. [`docs/content/index.md`](../content/index.md) 의 표에도 한 줄을 추가한다.
+3. 로고는 `public/brand/products/<slug>-icon.svg` (컬러) + `<slug>-icon-white.svg` (흰색) 한 쌍을 두고, `logoSrc` / `logoWhiteSrc` 필드에 절대 경로(`/brand/products/...`) 를 적는다.
+4. `accentColor` 는 그 제품의 공식 브랜드 색을 16진 코드로 (예: A.PAGO `#1878CE`, TEUM `#82C926`).
+5. [`docs/overview/products-02.md`](../overview/products-02.md) 의 표에도 한 줄을 추가한다.
+6. [`docs/content/index.md`](../content/index.md) 의 표에도 한 줄을 추가한다.
 
-이게 전부입니다. 라우트나 컴포넌트는 수정할 필요가 없습니다 — 목록·상세 페이지가 데이터 기반으로 자동 렌더링됩니다.
+이게 전부입니다. 라우트나 컴포넌트는 수정할 필요가 없습니다 — 목록·상세 페이지가 데이터 기반으로 자동 렌더링됩니다 (홈 섹션 / `/products` 풀섹션 / `/products/:slug` 상세 모두).
 
 ## 콘텐츠 변경 시 체크리스트
 

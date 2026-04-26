@@ -88,11 +88,24 @@
                               [운영 사이트 ↗]
 ```
 
-### 비주얼 블록
+### 비주얼 블록 — 흰 카드 + 위·아래 분할
 
-- 정사각 카드, accent 컬러 베이스 + Coverr 영상 풀블리드 + 하단 진한 그라디언트 오버레이(`from-black/65 via-black/20 to-black/10`).
-- 워드마크 텍스트(도메인 라벨 → 영문명 54-60px → 한글명) 좌하단 정렬, 흰색.
-- **status 배지는 노출하지 않음** — 홈에서는 마케팅 톤 유지, 운영 상태 정보는 상세 페이지의 `ProductHero` 에서만 노출.
+```
+┌─────────────────────────┐
+│                         │
+│  (accent + 영상 + 도메인 │  ← 카드 위 2/3 (h-2/3)
+│   라벨, 흰 텍스트)        │
+│                         │
+├─────────────────────────┤
+│ [컬러 로고]  A.PAGO      │  ← 카드 아래 1/3 (h-1/3, 흰 패널)
+│             아파고       │     로고·워드마크 둘 다 accent 컬러
+└─────────────────────────┘
+```
+
+- **카드 외곽**: `bg-white` + `ring-1 ring-slate-200` + `shadow-sm` + `aspect-square`.
+- **상단 (h-2/3)**: accent 색 풀블리드 + Coverr 영상 + 하단 그라디언트 오버레이(`from-black/55 via-black/15 to-black/5`). 도메인 라벨만 흰색으로 좌상단 노출.
+- **하단 (h-1/3, 흰 패널)**: `logoSrc` (컬러) + `name` (accent 색) + `nameKo` (slate-500) 좌측 정렬.
+- **status 배지는 사이트 전 영역에서 미노출** — "운영 중"·"베타" 라벨 자체를 제거하고, 데이터 모델만 보존(`Product.status`).
 
 ### 데이터 소스
 
@@ -100,13 +113,14 @@
 
 | 필드 | 사용처 |
 |---|---|
-| `name`, `nameKo`, `domain` | 비주얼 블록 워드마크 |
-| `accentColor` | 비주얼 블록 배경, pillar 라벨 색 |
-| `videoSrc` | 비주얼 블록 배경 영상 |
-| `tagline` | h2 |
+| `name`, `nameKo`, `domain` | 비주얼 블록 워드마크 + 도메인 라벨 |
+| `accentColor` | 비주얼 블록 상단 배경 / 워드마크 색 / eyebrow / tagline h2 / 카드 CTA / pillar 라벨 |
+| `videoSrc` | 비주얼 블록 상단 배경 영상 |
+| `logoSrc` | 비주얼 블록 하단 흰 패널의 컬러 로고 마크 |
+| `tagline` | h2 — accent 색 |
 | `summary` | lead 단락 |
 | `pillars` (있으면) | 단락 블록 — 없으면 `features.slice(0, 3)` 폴백 |
-| `externalUrl` (있으면) | "운영 사이트" 보조 CTA |
+| `externalUrl` (있으면) | "운영 사이트" 보조 CTA (ghost) |
 
 ### A.PAGO 섹션 (Product 01, alternate=false, muted)
 

@@ -2,7 +2,7 @@
 
 ## 현재 위치
 
-**M3 — 제품·회사·문의 페이지** 까지 완료. 다음은 **M4 (SEO · 자산 · 배포)** 입니다.
+**M4 — SEO · 자산 · 배포 보강** 까지 완료. 카페24 첫 배포 단계 진입.
 
 ## 단계별 계획
 
@@ -34,37 +34,41 @@
 
 - [x] Echo Wave 컬러 토큰 적용 ([../design/color-palette-02.md](../design/color-palette-02.md))
 - [x] 브랜드 자산 적용 — 로고는 Header / Footer 에, 파비콘·앱 아이콘은 `index.html` 에
-- [x] 타이포그래피(Pretendard) 적용
-- [x] 공통 UI: `Button`, `Section`, `SectionHeader`, `Container`, `StatusBadge`
+- [x] 타이포그래피(SUIT Variable) 적용 — 자체 호스팅, 외부 CDN 의존 0
+- [x] 공통 UI: `Button`, `Section`, `SectionHeader`, `Container`
 - [x] Header / Footer 정식 구현 (apago / TEUM 과 동일한 사업자 정보 블록 포함)
-- [x] 홈 페이지 4개 섹션 구현 ([../pages/home-01.md](../pages/home-01.md))
-- [ ] 반응형 검수 (모바일 / 태블릿 / 데스크톱) — 디자이너 확인 대기
+- [x] 홈 페이지 5개 섹션 구현 ([../pages/home-01.md](../pages/home-01.md))
+- [x] 반응형 검수 + 핵심 안전장치 (Header nav 작은 모바일·Contact 이메일 break-all·Footer 등)
 
 ### M3. 제품 · 회사 · 문의 페이지 ✅
 
-- [x] 제품 목록 페이지 (`/products`) 카드 그리드
-- [x] 제품 상세 페이지 (`/products/:slug`) 데이터 매핑
-- [x] A.PAGO 콘텐츠를 `src/content/products.ts` 로 옮기기
-- [x] TEUM 콘텐츠를 `src/content/products.ts` 로 옮기기
-- [x] About 페이지 (회사 정보 표 자동 렌더링)
-- [x] Contact 페이지 (메일 채널 + 카테고리별 가이드)
+- [x] 제품 목록 페이지 (`/products`) — 홈 ProductSection 풀섹션 재사용
+- [x] 제품 상세 페이지 (`/products/:slug`) — accent 풀블리드 Hero + 모든 섹션 accent 정렬
+- [x] A.PAGO 콘텐츠 + 의료법 컴플라이언스 가이드 ([../content/medical-compliance-03.md](../content/medical-compliance-03.md))
+- [x] TEUM 콘텐츠
+- [x] About 페이지 — 6개 섹션 (Hero·Mission·Values·운영 영역·회사 정보·CTA), 홈 결로 통일
+- [x] Contact 페이지 — 4종 컬러 헤더 카드 (BLAH + apago + teum + brand-deep)
 - [x] 404 페이지
+- [x] "운영 중"·"베타" status 배지 사이트 전 영역에서 제거
+- [x] 제품 컬러 로고 자산 추가 (`public/brand/products/`)
 
-### M4. SEO · 자산 · 배포 (다음 단계)
+### M4. SEO · 자산 · 배포 ✅
 
 - [x] `useSeo` 훅으로 페이지별 title/description/OG 메타 적용
 - [x] favicon, apple-touch-icon 적용
+- [x] **보안 보강** — SRI(SHA-256) 자동 주입, sourcemap 차단, esbuild.drop, .htaccess CSP/Frame/Permissions 헤더 ([../deployment/security-02.md](../deployment/security-02.md))
+- [x] **SUIT 폰트 자체 호스팅** — `public/fonts/SUIT-Variable.woff2`, 외부 CDN 의존 0
+- [x] 카페24 호스팅 연결 + `/www/` 배포 절차 ([../deployment/build-and-deploy-01.md](../deployment/build-and-deploy-01.md))
 - [ ] OG 이미지 1장 제작 (1200×630) — 워드마크 + 슬로건
 - [ ] `sitemap.xml` 생성 (정적 라우트 5개)
-- [ ] 호스팅 결정·연결 (Vercel / Cloudflare Pages 중)
-- [ ] 도메인 `blah.co.kr` 연결
-- [ ] 프리뷰 → 운영 배포
+- [ ] 운영 도메인 `blah.co.kr` 연결 + HTTPS 활성
 
-### M5. 최소 운영 · 측정 (선택)
+### M5. 최소 운영 · 측정 (다음 단계)
 
-- [ ] 분석 도구 도입 결정 시 추가
+- [ ] 분석 도구 도입 결정 시 추가 (CSP `script-src` / `connect-src` 동시 갱신)
 - [ ] 성능 점검 (Lighthouse 90+ 목표)
 - [ ] 접근성 (alt 텍스트, 시맨틱 마크업) 점검
+- [ ] 영상 자체 호스팅 검토 (CSP `media-src 'self'` 화)
 
 ### 향후 후보 (현재 범위 밖)
 

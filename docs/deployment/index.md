@@ -16,7 +16,8 @@
 
 | # | 문서 | 요약 |
 |---|---|---|
-| 01 | [build-and-deploy-01.md](build-and-deploy-01.md) | Vite 빌드, SPA 폴백, 호스팅 비교(Vercel/Cloudflare/Netlify), 도메인, SEO 기본기, 분석 |
+| 01 | [build-and-deploy-01.md](build-and-deploy-01.md) | Vite 빌드, SPA 폴백, 호스팅 비교(Apache/Vercel/Cloudflare/Netlify), 카페24 배포 절차, 도메인, SEO 기본기, 분석 |
+| 02 | [security-02.md](security-02.md) | SRI(SHA-256) · 소스맵 차단 · CSP / 응답 헤더 · 폰트 자체 호스팅 — 정적 사이트 5겹 안전장치 |
 
 ## 새 문서를 추가할 때
 

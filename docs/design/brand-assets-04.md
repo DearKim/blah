@@ -8,16 +8,21 @@
 ```
 public/brand/
 ├── logos/
-│   ├── logo-horizontal.svg   가로형 메인 락업
-│   ├── logo-vertical.svg     세로형 락업
-│   ├── logo-symbol.svg       막대 심볼만
-│   ├── logo-mono.svg         모노크롬 (charcoal 단색)
-│   └── logo-white.svg        화이트 단색
+│   ├── logo-horizontal.svg     가로형 메인 락업 (BLAH)
+│   ├── logo-vertical.svg       세로형 락업
+│   ├── logo-symbol.svg         막대 심볼만
+│   ├── logo-mono.svg           모노크롬 (charcoal 단색)
+│   └── logo-white.svg          화이트 단색
 ├── icons/
-│   ├── favicon.svg           브라우저 탭·북마크용 단순화 버전
-│   └── app-icon.svg          1024×1024 squircle 앱 아이콘
-└── animations/
-    └── echo-wave.gif         사운드 파장 루프 (360×180, 1.8s)
+│   ├── favicon.svg             브라우저 탭·북마크용 단순화 버전
+│   └── app-icon.svg            1024×1024 squircle 앱 아이콘
+├── animations/
+│   └── echo-wave.gif           사운드 파장 루프 (360×180, 1.8s)
+└── products/
+    ├── apago-icon.svg          A.PAGO 컬러 (#1878CE) — 흰 배경용
+    ├── apago-icon-white.svg    A.PAGO 흰색 — accent 배경용
+    ├── teum-mark.svg           TEUM 컬러 (#82C926) — 흰 배경용
+    └── teum-mark-white.svg     TEUM 흰색 — accent 배경용
 ```
 
 ## 2. 로고 5종 — 어디에 어떤 것을
@@ -118,7 +123,43 @@ import { EchoWaveBars } from "@/components/motion/EchoWaveBars";
 
 대체 가능 폰트: `Pretendard`, `system-ui`, `-apple-system`, `Segoe UI`, `sans-serif`.
 
-## 6. 코드에서 사용하기
+본문 한글 폰트는 **SUIT Variable** — `public/fonts/SUIT-Variable.woff2` 자체 호스팅. `src/styles/globals.css` 의 `@font-face` 가 단일 진입점입니다 (외부 CDN 의존 0). 자세한 사양은 [`../deployment/security-02.md`](../deployment/security-02.md) §5 참조.
+
+## 6. 제품 로고 (`products/`)
+
+각 제품의 마크는 두 변형을 한 쌍으로 둡니다.
+
+| 제품 | 컬러 SVG (밝은 배경) | 흰색 SVG (accent 배경) | 기본 컬러 |
+|---|---|---|---|
+| **A.PAGO** | `apago-icon.svg` | `apago-icon-white.svg` | `#1878CE` (A.PAGO Blue) |
+| **TEUM** | `teum-mark.svg` | `teum-mark-white.svg` | `#82C926` (TEUM Lime) |
+
+### 사용 위치 (현재 코드)
+
+| 위치 | 사용 변형 | 컴포넌트 |
+|---|---|---|
+| 홈 ProductSection 카드 하단 흰 패널 | 컬러 (`logoSrc`) | `src/components/home/ProductSection.tsx` |
+| `/products/:slug` Hero (accent 풀블리드) | 흰색 (`logoWhiteSrc`) | `src/components/product/ProductHero.tsx` |
+| `/products` 카드 / 다른 제품 보기 카드 | 컬러 (`logoSrc`) | `src/components/product/ProductCard.tsx` |
+| About `/about` 운영 영역 그리드 | 컬러 (`logoSrc`) | `src/routes/About.tsx` |
+
+### 코드에서 참조
+
+데이터는 [`src/content/products.ts`](../architecture/content-strategy-03.md) 의 `logoSrc` / `logoWhiteSrc` 필드로 관리. 컴포넌트는 절대 경로(`/brand/products/...`) 를 그대로 `<img src>` 로 받습니다.
+
+```tsx
+{product.logoSrc && (
+  <img src={product.logoSrc} alt="" aria-hidden="true" className="h-10 w-auto shrink-0" />
+)}
+```
+
+### 새 제품 로고 추가 절차
+
+1. 운영사가 만든 제품 마크 SVG 두 변형(컬러 + 흰색) 을 `public/brand/products/<slug>-icon.svg` / `<slug>-icon-white.svg` 로 둔다.
+2. `src/content/products.ts` 의 해당 제품 객체에 `logoSrc` / `logoWhiteSrc` / `accentColor` 추가.
+3. 본 문서 §6 표에 제품 한 줄 추가.
+
+## 7. 코드에서 사용하기
 
 ### React (Vite — 본 프로젝트)
 
@@ -138,7 +179,7 @@ import { EchoWaveBars } from "@/components/motion/EchoWaveBars";
 
 심볼만 인라인으로 가져와 색을 동적으로 바꿔야 한다면, [`logo-symbol.svg`](../../public/brand/logos/logo-symbol.svg) 를 컴포넌트로 임포트해 사용하세요. 본 프로젝트는 1차에서 `<img>` 태그로 충분합니다.
 
-## 7. 자산 변경·교체 시
+## 8. 자산 변경·교체 시
 
 1. 새 SVG 파일을 `public/brand/{logos,icons}/` 에 같은 이름으로 덮어씁니다.
 2. 본 문서의 viewBox / 사용 가이드에서 변경된 부분을 갱신합니다.

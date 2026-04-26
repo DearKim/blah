@@ -8,13 +8,16 @@
 blah/
 ├── README.md                  # 프로젝트 소개·빠른 시작
 ├── docs/                      # 본 디렉터리 (계획·시안·운영)
-├── public/                    # 정적 자산 (favicon, robots.txt, og-image 등)
+├── public/                    # 정적 자산 (그대로 dist/ 에 복사됨)
+│   ├── .htaccess              #   Apache 보안 헤더 + SPA fallback
+│   ├── _redirects             #   Netlify SPA fallback
+│   ├── robots.txt
+│   ├── brand/                 #   로고·아이콘·애니메이션 + products 컬러 로고
+│   └── fonts/                 #   SUIT-Variable.woff2 (자체 호스팅, 610 KB)
 ├── src/                       # 애플리케이션 코드
 ├── index.html                 # Vite 진입 HTML
-├── vite.config.ts
+├── vite.config.ts             # SRI 인라인 플러그인 + sourcemap 차단 + esbuild.drop
 ├── tsconfig.json
-├── tailwind.config.ts
-├── postcss.config.js
 ├── eslint.config.js
 ├── package.json
 ├── pnpm-lock.yaml
@@ -41,32 +44,31 @@ src/
 │   │   ├── Footer.tsx
 │   │   └── Container.tsx
 │   ├── product/
-│   │   ├── ProductCard.tsx
-│   │   ├── ProductHero.tsx
-│   │   └── FeatureList.tsx
+│   │   ├── ProductCard.tsx    # /products 목록(다른 제품 보기) — 컬러 로고 + accent CTA
+│   │   ├── ProductHero.tsx    # /products/:slug accent 풀블리드 Hero
+│   │   └── FeatureList.tsx    # accent 좌측 스트라이프 카드 리스트
 │   ├── home/
 │   │   ├── Hero.tsx
-│   │   └── ProductGrid.tsx
-│   └── ui/                    # 작은 원자 컴포넌트 (Button, Section, Badge 등)
+│   │   ├── ValueProps.tsx     # 풀블리드 영상 + 시그니처 pill
+│   │   └── ProductSection.tsx # accent + 영상 + 컬러 로고/워드마크 카드
+│   ├── motion/                # FadeUp / Stagger / EchoWaveBars / ScrollProgress
+│   └── ui/                    # 원자 컴포넌트 (Button, Section, ...)
 │
 ├── content/                   # 사이트에 들어가는 정적 콘텐츠 (TS 모듈)
 │   ├── company.ts             # 회사 정보 (이름, 미션, 연락처 등)
-│   ├── products.ts            # 제품 목록 + 상세 데이터
+│   ├── products.ts            # 제품 목록 + 상세 데이터 (accentColor, logoSrc 포함)
 │   └── nav.ts                 # 헤더·푸터 네비게이션 항목
 │
 ├── lib/
 │   ├── seo.ts                 # 페이지별 title/description/og 설정 헬퍼
+│   ├── motion.ts              # framer-motion 토큰·variants
 │   └── cn.ts                  # className 합치기 유틸 (clsx + tailwind-merge)
 │
-├── styles/
-│   └── globals.css            # Tailwind 진입 + 전역 변수
-│
-└── assets/                    # 번들에 포함될 이미지·SVG
-    ├── logo.svg
-    └── products/
-        ├── apago/...
-        └── teum/...
+└── styles/
+    └── globals.css            # Tailwind 진입 + @font-face (SUIT 자체 호스팅) + 전역 토큰
 ```
+
+> 별도의 `src/assets/` 는 두지 않습니다. 모든 정적 이미지는 `public/brand/` 절대 경로로 참조 — 빌드 후 그대로 dist/ 에 복사돼 캐시 친화적이고, 컴포넌트 코드와 자산 경로가 분리됩니다.
 
 ## 라우트 정의 (예시)
 

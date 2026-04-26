@@ -41,7 +41,8 @@ docs/
 │
 ├── deployment/                        배포·운영
 │   ├── index.md
-│   └── build-and-deploy-01.md         Vite 빌드, 호스팅, SEO, 도메인
+│   ├── build-and-deploy-01.md         Vite 빌드, 카페24 배포, SEO, 도메인
+│   └── security-02.md                 SRI · sourcemap 차단 · CSP · 폰트 자체 호스팅
 │
 └── roadmap/                           일정과 미정 사항
     ├── index.md
@@ -66,6 +67,10 @@ docs/
 1. [content/](content/) 의 제품별 카피 시안
 2. [design/brand-01.md](design/brand-01.md) — 톤·금칙어
 3. A.PAGO(의료) 카피를 다룬다면 [content/medical-compliance-03.md](content/medical-compliance-03.md) 필수
+
+**배포 / 운영자**
+1. [deployment/build-and-deploy-01.md](deployment/build-and-deploy-01.md) — 카페24 배포 절차, FTP 업로드 체크리스트
+2. [deployment/security-02.md](deployment/security-02.md) — SRI / CSP / sourcemap / 폰트 자체 호스팅 — 5겹 안전장치
 
 **디자이너**
 1. [design/index.md](design/index.md)
