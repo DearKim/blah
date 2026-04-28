@@ -15,7 +15,7 @@
 | # | 문서 | 제품·주제 |
 |---|---|---|
 | 01 | [apago-01.md](apago-01.md) | A.PAGO (아파고) — 의료 AI 정보 플랫폼 |
-| 02 | [teum-02.md](teum-02.md) | TEUM (틈) — 초단기 긱워크 매칭 |
+| 02 | [teum-02.md](teum-02.md) | TEUM (틈새) — 초단기 긱워크 매칭 |
 | 03 | [medical-compliance-03.md](medical-compliance-03.md) | A.PAGO 카피의 의료법·의료기기법·수의사법 컴플라이언스 가이드 (단일 출처) |
 
 ## 새 문서를 추가할 때 (= 새 제품 추가 시)

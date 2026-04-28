@@ -102,8 +102,8 @@ export const products: Product[] = [
   {
     slug: "teum",
     name: "TEUM",
-    nameKo: "틈",
-    tagline: "짧은 틈을 일로, 일을 수입으로",
+    nameKo: "틈새",
+    tagline: "짧은 틈새를 일로, 일을 수입으로",
     domain: "노동 · 시간",
     status: "beta",
     audiences: [
@@ -120,7 +120,7 @@ export const products: Product[] = [
     pillars: [
       {
         label: "시간 단위 긱워크 매칭",
-        body: "10분 · 30분 · 4시간 단위로 일거리를 분류해, 점심시간·공강·오후 두세 시간 같은 짧은 틈을 양쪽이 만나는 단위로 만듭니다. 면접 없이 즉시 시작 가능한 형태에 집중합니다.",
+        body: "10분 · 30분 · 4시간 단위로 일거리를 분류해, 점심시간·공강·오후 두세 시간 같은 짧은 틈새를 양쪽이 만나는 단위로 만듭니다. 면접 없이 즉시 시작 가능한 형태에 집중합니다.",
       },
       {
         label: "AI 기반 틈새 매칭",
