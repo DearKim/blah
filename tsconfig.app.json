@@ -22,6 +22,8 @@
 
     "baseUrl": ".",
     "paths": {
+      "@/lib/utils": ["design-system/src/lib/utils.ts"],
+      "@skill-ds/*": ["design-system/src/*"],
       "@/*": ["src/*"]
     }
   },

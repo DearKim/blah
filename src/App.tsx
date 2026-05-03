@@ -8,6 +8,7 @@ import ProductsList from "@/routes/ProductsList";
 import ProductDetail from "@/routes/ProductDetail";
 import About from "@/routes/About";
 import Contact from "@/routes/Contact";
+import Cooperation from "@/routes/Cooperation";
 import NotFound from "@/routes/NotFound";
 
 function ScrollToTop() {
@@ -21,10 +22,21 @@ function ScrollToTop() {
 export default function App() {
   return (
     <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
+  );
+}
+
+function AppShell() {
+  const { pathname } = useLocation();
+  const isCooperation = pathname.startsWith("/cooperation");
+
+  return (
+    <>
       <ScrollToTop />
-      <ScrollProgress />
+      {!isCooperation && <ScrollProgress />}
       <div className="flex min-h-full flex-col">
-        <Header />
+        {!isCooperation && <Header />}
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -32,11 +44,12 @@ export default function App() {
             <Route path="/products/:slug" element={<ProductDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/cooperation" element={<Cooperation />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-        <Footer />
+        {!isCooperation && <Footer />}
       </div>
-    </BrowserRouter>
+    </>
   );
 }

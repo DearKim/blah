@@ -50,9 +50,21 @@ function sri(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), sri()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      {
+        find: /^@\/lib\/utils$/,
+        replacement: path.resolve(__dirname, "./design-system/src/lib/utils.ts"),
+      },
+      {
+        find: "@skill-ds",
+        replacement: path.resolve(__dirname, "./design-system/src"),
+      },
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "./src"),
+      },
+    ],
+    dedupe: ["react", "react-dom"],
   },
   server: {
     port: 5173,

@@ -40,6 +40,7 @@ pnpm lint         # ESLint
 - `/products/:slug` — 제품 상세 (현재 `apago`, `teum`)
 - `/about` — 회사 소개
 - `/contact` — 문의
+- `/cooperation` — BLAH.Co 외주 개발 / SI 문의 사이트
 
 새 제품 추가는 [docs/architecture/content-strategy-03.md](docs/architecture/content-strategy-03.md) 절차를 따릅니다.
 

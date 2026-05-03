@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@source "../../design-system/src/components/Button";
+@source "../../design-system/src/components/Badge";
+@source "../../design-system/src/components/Card";
 
 /* SUIT Variable — 자체 호스팅 (public/fonts/). 외부 CDN 의존 0. */
 @font-face {
@@ -25,6 +28,33 @@
   --color-brand-mist: #e1f5ee;
   --color-brand-charcoal: #04342c;
   --color-brand-fg: #ffffff;
+
+  /* Skill Design System semantic slots for the /cooperation route. */
+  --color-background: #ffffff;
+  --color-foreground: #111827;
+  --color-card: #ffffff;
+  --color-card-foreground: #111827;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #111827;
+  --color-primary: #0f766e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
+  --color-accent: #e0f2fe;
+  --color-accent-foreground: #075985;
+  --color-border: #e2e8f0;
+  --color-input: #cbd5e1;
+  --color-ring: #0f766e;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #78350f;
+  --color-success: #16a34a;
+  --color-success-foreground: #ffffff;
+  --color-info: #2563eb;
+  --color-info-foreground: #ffffff;
 
   /* Extended ramp */
   --color-brand-50: #e1f5ee;
