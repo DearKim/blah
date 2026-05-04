@@ -25,6 +25,20 @@
 
 ## 빠른 시작
 
+### 클론 (필수 — 서브모듈 포함)
+
+본 repo 는 [DearKim/Skill-Design-System](https://github.com/DearKim/Skill-Design-System) 을 `design-system/` 서브모듈로 사용합니다. **반드시 `--recurse-submodules` 로 clone**:
+
+```bash
+git clone --recurse-submodules https://github.com/DearKim/blah.git
+# 이미 clone 한 경우
+git submodule update --init --recursive
+```
+
+서브모듈 init 누락 시 vite 빌드에서 `Failed to resolve import "@skill-ds/..."` 발생.
+
+### 의존성 / 개발
+
 ```bash
 pnpm install      # 의존성 설치
 pnpm dev          # 로컬 개발 서버 (http://localhost:5173)
