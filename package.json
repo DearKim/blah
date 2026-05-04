@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "test -d ../hompage/www && rsync -a --delete dist/ ../hompage/www/ && echo '[postbuild] dist → ../hompage/www/ 동기화 완료 (카페24 미러)' || echo '[postbuild] ../hompage/www/ 없음 — 카페24 미러 동기화 skip'",
+    "sync:hompage": "rsync -a --delete dist/ ../hompage/www/",
     "preview": "vite preview",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write ."

@@ -6,9 +6,20 @@ Vite 가 정적 산출물(`dist/`) 을 생성합니다. 동적 백엔드 없이 
 
 ```bash
 pnpm install
-pnpm build       # → dist/ 생성 (sourcemap 없음, SRI 자동 주입)
+pnpm build       # → dist/ 생성 + ../hompage/www/ 자동 동기화 (카페24 FTP 미러)
 pnpm preview     # 로컬에서 빌드 결과 확인
 ```
+
+`pnpm build` 는 두 단계로 동작합니다:
+
+1. `tsc -b && vite build` — `dist/` 생성 (sourcemap 없음, SRI 자동 주입)
+2. `postbuild` 훅 — 형제 디렉터리 `../hompage/www/` 가 존재하면 `rsync -a --delete` 로 dist 와 1:1 미러. 없으면 skip (CI · 카페24 미러 아닌 환경 보호).
+
+`../hompage/` 는 카페24 호스팅 FTP 루트의 로컬 미러입니다 (자세히는 [카페24 배포](#카페24-배포-현-운영-환경) 절). 빌드 한 번으로 dist 생성 + 카페24 업로드 폴더 갱신이 끝납니다.
+
+> **수동 동기화가 필요한 경우** — 빌드 없이 hompage/www 만 다시 동기화 하려면 `pnpm sync:hompage`. (예: hompage 폴더를 수동으로 건드린 뒤 되돌릴 때)
+>
+> **CI/Vercel 등 다른 환경에서 빌드 시** — `../hompage/` 가 없어 postbuild 가 자동 skip 되므로 별도 처리 불필요.
 
 산출 결과:
 
@@ -50,13 +61,28 @@ dist/
 
 ## 카페24 배포 (현 운영 환경)
 
+### 로컬 미러: `../hompage/`
+
+카페24 FTP 루트를 그대로 본뜬 로컬 폴더가 blah 와 형제 위치에 있습니다:
+
+```
+~/Desktop/blah/
+├── blah/                ← 이 프로젝트 (소스)
+└── hompage/             ← 카페24 FTP 루트 미러
+    ├── .ftpaccess       ← 카페24 시스템 파일 (건드리지 말 것)
+    ├── .htaccess        ← 카페24 시스템 파일 (건드리지 말 것)
+    └── www/             ← 도큐먼트 루트 — `pnpm build` 가 여기 dist 를 동기화
+```
+
+`pnpm build` 의 `postbuild` 훅이 `dist/` 를 `../hompage/www/` 에 `rsync -a --delete` 로 복사합니다. 즉, 빌드 직후 `../hompage/www/` 는 **항상 dist 와 동일한 상태**가 됩니다 — stale 한 이전 빌드의 hash 파일도 자동 정리됩니다.
+
 ### 도큐먼트 루트
 
 카페24 일반/광 호스팅의 도큐먼트 루트는 **`/www/`** 입니다.
-FTP 접속 후 보이는 구조:
+FTP 접속 후 보이는 구조 (= 로컬 `hompage/` 와 동일):
 
 ```
-/                    ← FTP 루트
+/                    ← FTP 루트 (= 로컬 hompage/)
 ├── www/             ← 여기 (도큐먼트 루트, 도메인 → 이 폴더)
 ├── log/
 ├── backup/
@@ -65,17 +91,19 @@ FTP 접속 후 보이는 구조:
 
 ### 업로드할 것
 
-`dist/` **폴더 자체가 아니라 내부 파일들**을 `/www/` 로 옮깁니다.
+`pnpm build` 후 **`hompage/www/` 내부 파일들을** FTP 로 카페24 `/www/` 로 그대로 미러링합니다.
 
 ```
-✅ 올바름                    ❌ 잘못됨
-/www/index.html              /www/dist/index.html
-/www/.htaccess               /www/dist/.htaccess
-/www/assets/                 /www/dist/assets/
-/www/brand/
-/www/fonts/
-/www/robots.txt
+로컬                              카페24
+hompage/www/index.html       →   /www/index.html
+hompage/www/.htaccess        →   /www/.htaccess
+hompage/www/assets/          →   /www/assets/
+hompage/www/brand/           →   /www/brand/
+hompage/www/fonts/           →   /www/fonts/
+hompage/www/robots.txt       →   /www/robots.txt
 ```
+
+`dist/` 를 직접 FTP 에 올리지 않고 `hompage/www/` 를 올립니다 — 두 폴더의 내용은 빌드 직후 동일하지만, hompage 가 카페24 미러로서 SSOT 입니다.
 
 ### FTP 클라이언트 주의
 
@@ -100,9 +128,10 @@ FTP 접속 후 보이는 구조:
 
 ### 첫 업로드 체크리스트
 
-- [ ] `dist/.htaccess` 가 FTP 클라이언트에 보이는가
+- [ ] `pnpm build` 실행 완료, postbuild 출력에 `dist → ../hompage/www/ 동기화 완료` 메시지 확인
+- [ ] `hompage/www/.htaccess` 가 FTP 클라이언트에 보이는가
 - [ ] `/www/` 안 기존 파일(예: `hosting_index.html`) 백업 후 비우기
-- [ ] `dist/` 내부 파일들을 `/www/` 로 통째 업로드
+- [ ] `hompage/www/` 내부 파일들을 `/www/` 로 통째 업로드
 - [ ] `https://도메인/` → 홈 정상 노출
 - [ ] `https://도메인/products/apago` 직접 입력 → 404 안 나면 mod_rewrite OK
 - [ ] DevTools Network → `/fonts/SUIT-Variable.woff2` 200 (jsdelivr 호출 0건)
